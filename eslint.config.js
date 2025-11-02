@@ -21,4 +21,13 @@ export default defineConfig([
 
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
+
+  module.exports = {
+    rules: {
+      // 不再强制要求组件命名
+      // 'vue/multi-word-component-names': 'off'  // 亦可
+      'vue/multi-word-component-names': 0
+    }
+  }
+
 ])
