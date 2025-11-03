@@ -2,20 +2,25 @@
 import { getTopCategoryAPI } from '@/apis/category'
 import { getBannerAPI } from '@/apis/home'
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
 
 // 请求数据
 const categoryData = ref({})
 const route = useRoute()
 
-const getCategory = async () => {
-  const res = await getTopCategoryAPI(route.params.id)
+const getCategory = async (id = route.params.id) => {
+  const res = await getTopCategoryAPI(id)
   categoryData.value = res.result
 }
 
 onMounted(() => {
   getCategory()
+})
+
+// 路由参数变化 重新请求数据
+onBeforeRouteUpdate((to) => {
+  getCategory(to.params.id)
 })
 
 // 请求banner
