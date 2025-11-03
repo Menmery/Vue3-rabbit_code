@@ -4,7 +4,7 @@ import { defineProps } from 'vue'
 defineProps({
   goods: {
     type: Object,
-    default: () => { }
+    default: () => ({}) //防止所有组件共享一个对象
   }
 })
 </script>
