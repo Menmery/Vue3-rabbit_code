@@ -19,6 +19,8 @@ onMounted(() => {
   <LayoutNav></LayoutNav>
   <LayoutHeader></LayoutHeader>
   <!-- 二级路由出口 -->
+  <!-- 添加key 破坏复用机制 触发生命周期钩子 -->
+  <!-- <RouterView :key="$route.fullPath"></RouterView> -->
   <RouterView></RouterView>
   <LayoutFooter></LayoutFooter>
 </template>
