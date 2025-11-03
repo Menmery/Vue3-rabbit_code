@@ -1,20 +1,16 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 
 export default defineConfig([
   {
-    name: 'app/files-to-lint',
     files: ['**/*.{js,mjs,jsx,vue}'],
-  },
-
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
-
-  {
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
     languageOptions: {
       globals: {
         ...globals.browser,
+        ...globals.node, // 如果需要 Node.js 全局变量
       },
     },
   },
@@ -22,12 +18,19 @@ export default defineConfig([
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
 
-  module.exports = {
+  {
     rules: {
-      // 不再强制要求组件命名
-      // 'vue/multi-word-component-names': 'off'  // 亦可
-      'vue/multi-word-component-names': 0
+      'vue/multi-word-component-names': 'off',
+      'no-unused-vars': ['error', {
+        'args': 'none',
+        'caughtErrors': 'none',
+        'varsIgnorePattern': '^_'
+      }],
+      'vue/no-unused-vars': 'error',
+      // 其他常用规则
+      'no-console': 'warn',
+      'no-debugger': 'error',
+      'semi': ['error', 'never']
     }
-  }
-
+  },
 ])
