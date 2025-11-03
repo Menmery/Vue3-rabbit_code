@@ -1,8 +1,14 @@
 import http from "@/utils/http"
 
-export const getBannerAPI = () => {
+// 设置默认参数为空对象
+export const getBannerAPI = (params = {}) => {
+    // 设置默认数据为1
+    const { distributionSite = '1' } = params
     return http({
-        url: 'home/banner'
+        url: 'home/banner',
+        params: {
+            distributionSite
+        }
     })
 }
 
