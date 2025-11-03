@@ -28,8 +28,8 @@ onMounted(() => {
           </strong>
         </RouterLink>
         <ul class="goods-list">
-          <li v-for="good in cate.goods" :key="good.id">
-            <GoodsItem :goods="good"></GoodsItem>
+          <li v-for="goods in cate.goods" :key="goods.id">
+            <GoodsItem :goods="goods"></GoodsItem>
           </li>
         </ul>
       </div>
