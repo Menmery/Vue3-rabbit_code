@@ -20,3 +20,9 @@ export const findHotAPI = () => {
     })
 }
 
+// 产品列表
+export const productAPI = () => {
+    return http({
+        url: '/home/goods'
+    })
+}
