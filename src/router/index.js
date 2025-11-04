@@ -33,6 +33,10 @@ const router = createRouter({
       component: Login
     }
   ],
+  // 切换路由回到顶部
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 
 export default router
