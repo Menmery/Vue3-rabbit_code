@@ -19,3 +19,12 @@ export const getCategoryFilterAPI = (id) => {
     }
   })
 }
+
+// 获取商品列表数据
+export const getSubCategoryAPI = (data) => {
+  return http({
+    url: '/category/goods/temporary',
+    method: 'POST',
+    data
+  })
+}
