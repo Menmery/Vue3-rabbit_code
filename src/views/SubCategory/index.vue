@@ -34,6 +34,12 @@ const getGoodsList = async () => {
 onMounted(() => {
   getGoodsList()
 })
+
+// 点击tab
+const tabChange = () => {
+  reqData.value.page = 1
+  getGoodsList()
+}
 </script>
 
 <template>
@@ -49,7 +55,7 @@ onMounted(() => {
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs v-model="reqData.sortField" @teb-change="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
