@@ -1,10 +1,14 @@
 <script setup>
 import { ref } from 'vue'
+import { loginAPI } from '@/apis/user'
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import { useRouter } from 'vue-router'
 
 // 表单数据对象
 const userInfo = ref({
-  account: '',
-  password: '',
+  account: 'heima293',
+  password: 'hm#qd@23!',
   agree: true
 })
 
@@ -32,10 +36,14 @@ const rules = {
 
 // 统一验证
 const formRef = ref(null)
+const router = useRouter()
 const doLogin = () => {
-  formRef.value.validate((valid) => {
+  const { account, password } = userInfo.value
+  formRef.value.validate(async (valid) => {
     if (valid) {
-      //
+      await loginAPI({ account, password })
+      ElMessage({ type: 'success', message: '登陆成功' })
+      router.replace({ path: '/' })
     }
   })
 }
