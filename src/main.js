@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-
 // 懒加载插件
 import { lazyPlugin } from './directives'
 
