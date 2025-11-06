@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+
+
+// 懒加载插件
 import { lazyPlugin } from './directives'
+
+// 全局组件插件
 import { componentPlugin } from '@/components/index'
 
 import App from './App.vue'
