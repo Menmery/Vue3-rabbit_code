@@ -17,9 +17,6 @@ onMounted(() => getGoods())
 
 // 数量组件
 const count = ref(1)
-const countChange = (count) => {
-  //
-}
 
 // sku组件
 let skuObj = {}
@@ -119,7 +116,7 @@ const addCart = () => {
               <!-- sku组件 -->
               <XtxSku :goods="goods" @change="skuChange"></XtxSku>
               <!-- 数据组件 -->
-              <el-input-number v-model="count" @change="countChange" />
+              <el-input-number v-model="count" />
               <!-- 按钮组件 -->
               <div>
                 <el-button size="large" class="btn" @click="addCart">

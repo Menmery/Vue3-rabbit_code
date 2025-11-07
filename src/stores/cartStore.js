@@ -15,10 +15,16 @@ export const useCartStore = defineStore('cart', () => {
       cartList.value.push(goods)
     }
   }
+  // 移除商品
+  const delCart = async (skuId) => {
+    const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+    cartList.value.splice(idx, 1)
+  }
 
   return {
     cartList,
-    addCart
+    addCart,
+    delCart
   }
 }, {
   persist: true,
