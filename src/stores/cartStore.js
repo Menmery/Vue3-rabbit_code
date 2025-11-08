@@ -46,6 +46,11 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  // 清空购物车
+  const clearCart = () => {
+    cartList.value = []
+  }
+
   // 单选功能
   const singleCheck = (skuId, selected) => {
     // find返回的是对象的引用，所以直接修改selected属性
@@ -79,7 +84,8 @@ export const useCartStore = defineStore('cart', () => {
     isAll,
     allCheck,
     selectedCount,
-    selectedPrice
+    selectedPrice,
+    clearCart
   }
 }, {
   persist: true,
