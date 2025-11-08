@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
-import { insertCartAPI, findNewCartListAPI } from '@/apis/cart'
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart'
 import { useUserStore } from '@/stores/user.js'
 
 export const useCartStore = defineStore('cart', () => {
@@ -9,14 +9,20 @@ export const useCartStore = defineStore('cart', () => {
 
   // 购物车数据
   const cartList = ref([])
+
+  // 获取最新购物车数据
+  const getNewCartList = async () => {
+    const res = await findNewCartListAPI()
+    cartList.value = res.result
+  }
+
   // 添加商品到购物车
   const addCart = async (goods) => {
     // 判断是否登录
     if (isLogin.value) {
       const { skuId, count } = goods
       await insertCartAPI({ skuId, count })
-      const res = await findNewCartListAPI()
-      cartList.value = res.result
+      getNewCartList()
     } else {
       // 已添加的 count ++
       // 未添加的 push 到数组
@@ -30,8 +36,14 @@ export const useCartStore = defineStore('cart', () => {
   }
   // 移除商品
   const delCart = async (skuId) => {
-    const idx = cartList.value.findIndex((item) => skuId === item.skuId)
-    cartList.value.splice(idx, 1)
+    // 判断是否登录
+    if (isLogin.value) {
+      await delCartAPI([skuId])
+      getNewCartList()
+    } else {
+      const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+      cartList.value.splice(idx, 1)
+    }
   }
 
   // 单选功能
