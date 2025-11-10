@@ -24,7 +24,7 @@ http.interceptors.request.use(config => {
 // 响应拦截器
 http.interceptors.response.use(res => res.data, e => {
   const userStore = useUserStore()
-  ElMessage({ type: 'warning', message: e.response?.data.message })
+  ElMessage({ type: 'warning', message: e?.response?.data.message })
   if (e.response.status === 401) {
     userStore.clearUserInfo()
     router.push('/login')
