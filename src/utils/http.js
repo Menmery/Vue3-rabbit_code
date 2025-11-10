@@ -8,7 +8,7 @@ import 'element-plus/theme-chalk/el-message.css'
 // 创建axios实例
 const http = axios.create({
   baseURL: 'https://pcapi-xiaotuxian-front-devtest.itheima.net',
-  timeout: 5000
+  timeout: 100000
 })
 
 // 请求拦截器
@@ -25,7 +25,7 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(res => res.data, e => {
   const userStore = useUserStore()
   ElMessage({ type: 'warning', message: e?.response?.data.message })
-  if (e.response.status === 401) {
+  if (e.response?.status === 401) {
     userStore.clearUserInfo()
     router.push('/login')
   }
