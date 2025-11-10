@@ -12,27 +12,44 @@ const tabTypes = [
   { name: "complete", label: "已完成" },
   { name: "cancel", label: "已取消" }
 ]
+
 // 订单列表
 const orderList = ref([])
+const loading = ref(false) // 新增：加载状态
 const params = ref({
   orderState: 0,
   page: 1,
   pagesize: 2
 })
+
+const total = ref(0) // 总数
 const getOrderList = async () => {
-  const res = await getUserOrder(params)
-  orderList.value = res.result.items
+  loading.value = true // 开始加载
+  try {
+    const res = await getUserOrder(params.value)
+    orderList.value = res.result.items || []
+    total.value = res.result.counts
+  } catch (error) {
+    orderList.value = []
+  } finally {
+    loading.value = false // 结束加载
+  }
 }
 
 const tabChange = (type) => {
   params.value.orderState = type
+  params.value.page = 1
+  getOrderList()
+}
+
+const pageChange = (page) => {
+  params.value.page = page
   getOrderList()
 }
 
 onMounted(() => {
   getOrderList()
 })
-
 </script>
 
 <template>
@@ -42,11 +59,31 @@ onMounted(() => {
       <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
 
       <div class="main-container">
-        <div class="holder-container" v-if="orderList.length === 0">
+        <!-- 使用 Element UI 的加载组件 -->
+        <el-skeleton v-if="loading" :rows="5" animated :throttle="0">
+          <template #template>
+            <!-- 订单项骨架屏 -->
+            <div class="skeleton-order-item" v-for="item in 3" :key="item">
+              <el-skeleton-item variant="text" style="width: 100%; height: 50px; margin-bottom: 10px;" />
+              <div class="skeleton-body">
+                <el-skeleton-item variant="image" style="width: 70px; height: 70px; margin-right: 10px;" />
+                <div style="flex: 1;">
+                  <el-skeleton-item variant="text" style="width: 80%; margin-bottom: 10px;" />
+                  <el-skeleton-item variant="text" style="width: 60%;" />
+                </div>
+                <el-skeleton-item variant="text" style="width: 80px; height: 30px;" />
+              </div>
+            </div>
+          </template>
+        </el-skeleton>
+
+        <!-- 空状态 -->
+        <div class="holder-container" v-else-if="orderList.length === 0">
           <el-empty description="暂无订单数据" />
         </div>
+
+        <!-- 订单列表 -->
         <div v-else>
-          <!-- 订单列表 -->
           <div class="order-item" v-for="order in orderList" :key="order.id">
             <div class="head">
               <span>下单时间：{{ order.createTime }}</span>
@@ -114,14 +151,13 @@ onMounted(() => {
           </div>
           <!-- 分页 -->
           <div class="pagination-container">
-            <el-pagination background layout="prev, pager, next" />
+            <el-pagination :total="total" @current-change="pageChange" :page-size="params.pagesize" background
+              layout="prev, pager, next" />
           </div>
         </div>
       </div>
-
     </el-tabs>
   </div>
-
 </template>
 
 <style scoped lang="scss">
@@ -135,6 +171,20 @@ onMounted(() => {
 
   .main-container {
     min-height: 500px;
+    position: relative;
+
+    // 骨架屏样式
+    .skeleton-order-item {
+      margin-bottom: 20px;
+      border: 1px solid #f5f5f5;
+      padding: 10px;
+
+      .skeleton-body {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+      }
+    }
 
     .holder-container {
       min-height: 500px;
